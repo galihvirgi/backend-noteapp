@@ -1,5 +1,10 @@
 const mysql = require ('mysql2/promise');
 
+class UserHandler{
+    constructor(service){
+        this.service = service
+    }
+}
 const addUser = async (request, h) => {
     const connection = await mysql.createConnection({
         host: 'localhost',

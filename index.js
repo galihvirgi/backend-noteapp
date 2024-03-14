@@ -4,7 +4,8 @@ const Hapi = require('@hapi/hapi');
 const notesPlugin = require('./plugins/notes');
 const UserPlugin = require('./plugins/userNotes');
 const NoteService = require('./services/mysql/NoteService')
-const mysql = require('mysql2/promise')
+const mysql = require('mysql2/promise');
+const UserServices = require('./services/mysql/UserService');
 
 
 const init = async () => {
@@ -23,6 +24,7 @@ const init = async () => {
 
     // INI OBJEK SERVICES
     const noteServices = new NoteService(pool)
+    const userServices = new UserServices(pool)
 
     const server = Hapi.server({
         port: 3000,
