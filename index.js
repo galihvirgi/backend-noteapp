@@ -12,8 +12,8 @@ const init = async () => {
     const pool = mysql.createPool({
         host: 'localhost',
         user: 'root',
-        password: 'root',
-        database: 'test',
+        password: 'virgi2007btg',
+        database: 'notes',
         waitForConnections: true,
         connectionLimit: 10,
         enableKeepAlive: true,
