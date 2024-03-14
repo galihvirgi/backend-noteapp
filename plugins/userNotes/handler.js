@@ -17,9 +17,6 @@ class UserHandler{
 
         const response = h.response({
             status: 'success',
-            data: {
-                userId
-            }
         })
 
         response.code(201)
