@@ -43,7 +43,9 @@ const init = async () => {
     await server.register(
         {
             plugin : UserPlugin,
-            options : {}
+            options : {
+                service: userServices
+            }
         }
     )
     await server.start();

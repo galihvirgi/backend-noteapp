@@ -8,6 +8,7 @@ class NoteHandler {
         // ini ditambahkan agar masing-masing method dapat mengakses 'this'
         this.addNoteHandler = this.addNoteHandler.bind(this)
         this.getNotesHandler = this.getNotesHandler.bind(this)
+        this.getNoteByIdHandler = this.getNoteByIdHandler.bind(this)
         this.updateNoteHandler = this.updateNoteHandler.bind(this)
         this.deleteNoteHandler = this.deleteNoteHandler.bind(this)
     }
@@ -68,6 +69,29 @@ class NoteHandler {
 
         response.code(201)
         return response
+    }
+
+    getNoteByIdHandler = async (request, h) => {
+
+        try {
+            const { id } = request.params
+            const notes = await this._service.getNoteById(id)
+
+            const response = h.response({
+                status: 'success',
+                data: {
+                    notes
+                }
+            })
+    
+            response.code(201)
+            return response
+        } catch (err) {
+            return h.response({
+                status: 'fail',
+                message: err.message,
+            })
+        }
     }
 
     updateNoteHandler = async (request, h) => {

@@ -3,20 +3,20 @@ class UserServices{
         this.pool = pool
     }
 
-    async addUser({nama, email, password}){
-        const[result] = await this.pool.execute('INSERT INTO user (nama, email, password) VALUES (:nama, :email, :password)', { nama, email, password })
+    async addUser({username, email, password}){
+        const[result] = await this.pool.execute('INSERT INTO user (username, email, password) VALUES (:username, :email, :password)', { username, email, password })
         console.log(result)
         return result.InsertId
     }
 
-    async getUser() {
+    async getUsers() {
         const [rows] = await this.pool.query('SELECT * FROM user')
         console.log(rows)
         return rows
     }
 
-    async editUserById(id, {nama, email, password}){
-        const[result] = await this.pool.execute('UPDATE user SET nama=:nama, email=:email, password=:password WHERE id=:id', {nama, email, password, id})
+    async editUserById(id, {username, email, password}){
+        const[result] = await this.pool.execute('UPDATE user SET username=:username, email=:email, password=:password WHERE id=:id', {username, email, password, id})
         return result.affectedRows
     }
 

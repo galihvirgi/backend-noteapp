@@ -1,25 +1,25 @@
-const { addUser, getUser, updateUser, deleteUser } = require("./handler")
 
-const routesUser = [
+
+const routesUser = (handler) => [
     {
         method : 'POST',
         path : '/user',
-        handler : addUser
+        handler : handler.addUserHandler
     },
     {
         method: 'GET',
         path: '/user',
-        handler: getUser
+        handler: handler.getUserHandler
     },
     {
         method: 'PUT',
-        path: '/user',
-        handler: updateUser
+        path: '/user/{id}',
+        handler: handler.updateUserHandler
     },
     {
         method: 'DELETE',
         path: '/user/{id}',
-        handler: deleteUser
+        handler: handler.deleteUserHandler
     },
     
 ]

@@ -3,95 +3,80 @@ const mysql = require ('mysql2/promise');
 class UserHandler{
     constructor(service){
         this.service = service
-    }
-}
-const addUser = async (request, h) => {
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'virgi2007btg',
-        database: 'notes',
-    });
-    const nama = request.payload.nama
-    const email = request.payload.email
-    const password = request.payload.password
 
-    try {
-        const sql = 'INSERT INTO `notes`.`user` (`nama`, `email`, `password`) VALUES(?, ?, ?)'
-        const values = [nama, email, password]
-
-        const [results, field] = await connection.execute(sql, values);
-        const response = h.response("berhasil").code(200);
-        return response;
-    } catch (err) {
-        console.log(err);
+        this.addUserHandler = this.addUserHandler.bind(this)
+        this.getUserHandler = this.getUserHandler.bind(this)
+        this.updateUserHandler = this.updateUserHandler.bind(this)
+        this.deleteUserHandler = this.deleteUserHandler.bind(this)
     }
 
-}
+    addUserHandler = async (request, h) => {
+        const {username, email, password} = request.payload
 
-const getUser = async (request, h) => {
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'virgi2007btg',
-        database: 'notes',
-    });
-    try {
-        const [results] = await connection.query(
-          'SELECT * FROM `user`'
-        );
-        const response = h.response(results).code(200);
-        return response;
-    } catch (err) {
-        console.log(err);
+        const userId = await this.service.addUser({username, email, password})
+
+        const response = h.response({
+            status: 'success',
+            data: {
+                userId
+            }
+        })
+
+        response.code(201)
+        return response
     }
-    
-}
 
-const updateUser = async (request, h) => {
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'virgi2007btg',
-        database: 'notes',
-    });
-    const nama = request.payload.nama
-    const email = request.payload.email
-    const password = request.payload.password
-    const id = request.payload.id
+    getUserHandler = async(request, h) => {
+        const user = await this.service.getUsers()
 
-    try {
-        const sql = 'UPDATE `user` SET `nama` = ?, `email` = ?, `password` = ? WHERE `id` = ?'
-        const values = [nama, email, password, id]
- 
-        const [results, field] = await connection.execute(sql, values);
-        const response = h.response("berhasil").code(200);
-        return response;
-    } catch (err) {
-        console.log(err);
+        const response = h.response({
+            status: 'success',
+            data: {
+                user
+            }
+        })
+
+        response.code(201)
+        return response
     }
-}
 
-const deleteUser = async (request, h) => {
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root', 
-        password: 'virgi2007btg',
-        database: 'notes',
-    });
-    
-    const id = request.params.id
+    updateUserHandler = async (request, h) => {
+        try{
+            const { id } = request.params
+            const { username, email, password } = request.payload
 
-    try {
-        const sql = 'DELETE FROM `user` WHERE id=?'
-        const values = [id]
+            await this.service.editUserById(id, {username, email, password})
 
-        const [results, field] = await connection.execute(sql, values);
-        const response = h.response("berhasil").code(200);
-        return response;
-    } catch (err) {
-        console.log(err);
+            return h.response({
+                status: 'success',
+                message: 'User berhasil diubah',
+            })
+        }catch (err) {
+            return h.response({
+                status: 'fail',
+                message: err.message,
+            })
+        }
+    }
+
+    deleteUserHandler = async (request, h) => {
+
+        
+        try {
+            const { id } = request.params
+            this.service.deleteUserById(id)
+
+            return h.response({
+                status: 'success',
+                message: 'user berhasil dihapus'
+            })
+        } catch (err) {
+            return h.response({
+                status: 'fail',
+                message: err.message,
+            })
+        }
     }
 }
 
-module.exports = { addUser, getUser, updateUser, deleteUser}
+module.exports = UserHandler
