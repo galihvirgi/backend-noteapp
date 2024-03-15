@@ -1,3 +1,5 @@
+//Ini untuk user notes
+
 class UserServices{
     constructor(pool){
         this.pool = pool

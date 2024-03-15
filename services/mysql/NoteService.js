@@ -1,3 +1,5 @@
+//ini untuk notes
+
 class NotesService {
   constructor(pool) {
     this._pool = pool
