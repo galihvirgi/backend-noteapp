@@ -3,7 +3,7 @@ const mysql = require('mysql2/promise');
 
 class NoteHandler {
     constructor(service) {
-        this._service = service
+        this._service = service 
 
         // ini ditambahkan agar masing-masing method dapat mengakses 'this'
         this.addNoteHandler = this.addNoteHandler.bind(this)
