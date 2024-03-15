@@ -1,10 +1,21 @@
+const Joi = require("joi")
+const { validateAddUser } = require("./validate")
 
 
 const routesUser = (handler) => [
     {
         method : 'POST',
         path : '/user',
-        handler : handler.addUserHandler
+        handler : handler.addUserHandler,
+        options: {
+            validate: {
+                payload: Joi.object({ 
+                    username: Joi.required(),
+                    email: Joi.required(),
+                    password: Joi.string().min(8).required() 
+                }) 
+            }
+        }
     },
     {
         method: 'GET',
