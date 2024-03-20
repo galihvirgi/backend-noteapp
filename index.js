@@ -1,12 +1,14 @@
 'use  strict';
 
-const Jwt = require('@hapi/jwt')
 const Hapi = require('@hapi/hapi');
 const notesPlugin = require('./plugins/notes');
 const UserPlugin = require('./plugins/userNotes');
 const NoteService = require('./services/mysql/NoteService')
 const mysql = require('mysql2/promise');
 const UserServices = require('./services/mysql/UserService');
+const Jwt = require('@hapi/jwt');
+const TokenManager = require('./tokenize/tokenManager');
+
 
 
 const init = async () => {
@@ -32,27 +34,51 @@ const init = async () => {
         host: 'localhost',
     });
 
+    // await server.register([
+    //     {
+    //         plugin: Jwt
+    //     }
+    // ])
+
+    server.auth.strategy('opennote_jwt', 'jwt', {
+        keys: '882cf3826475aeec414d83cfc3d34751051a2ed50e6e4b0190083eae78e01373207dd3e1644c65d5b45b07bf929533e42f0b3901300b87915b5cf604ce0fa061',
+        verify: {
+            aud: false,
+            iss: false,
+            sub: false,
+            maxAgeSec: '1800'
+        },
+        validate: (artifacts) => ({
+            isValid: true,
+            credentials: {
+                id: artifacts.decoded.payload.id
+            }
+        })
+    })
+
     await server.register([
         {
-            plugin: Jwt
-        }
-    ])
-
-    await server.register(
+            plugin: auth,
+            options: {
+                userServices,
+                tokenManager: TokenManager
+            }
+        },
         {
             plugin : notesPlugin,
             options : {
                 service: noteServices
             }
-        }
-    )
-    await server.register(
+        },
         {
             plugin : UserPlugin,
             options : {
                 service: userServices
             }
         }
+    ])
+    await server.register(
+        
     )
     await server.start();
     console.log('Server running on %s', server.info.uri);

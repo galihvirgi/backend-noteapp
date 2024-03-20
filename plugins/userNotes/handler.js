@@ -37,6 +37,26 @@ class UserHandler{
         return response
     }
 
+    getUserByUsernameHandler = async(request, h) => {
+        
+        try {
+            const { username } = request.params
+            const user = await this.service.getUserByUsername(username)
+
+            return h.response({
+                status: 'success',
+                data: {
+                    user
+                }
+            })
+        } catch (err) {
+            return h.response({
+                status: 'fail',
+                message: err.message,
+            })
+        }
+    }
+
     updateUserHandler = async (request, h) => {
         try{
             const { id } = request.params

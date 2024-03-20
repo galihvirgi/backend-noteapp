@@ -1,5 +1,4 @@
 const Joi = require("joi")
-const { validateAddUser } = require("./validate")
 
 
 const routesUser = (handler) => [
@@ -21,6 +20,11 @@ const routesUser = (handler) => [
         method: 'GET',
         path: '/user',
         handler: handler.getUserHandler
+    },
+    {
+        method: 'GET',
+        path: '/user/{username}',
+        handler: handler.getUserByUsernameHandler
     },
     {
         method: 'PUT',
