@@ -1,5 +1,6 @@
 'use  strict';
 
+const Jwt = require('@hapi/jwt')
 const Hapi = require('@hapi/hapi');
 const notesPlugin = require('./plugins/notes');
 const UserPlugin = require('./plugins/userNotes');
@@ -31,6 +32,11 @@ const init = async () => {
         host: 'localhost',
     });
 
+    await server.register([
+        {
+            plugin: Jwt
+        }
+    ])
 
     await server.register(
         {
