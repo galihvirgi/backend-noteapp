@@ -37,11 +37,11 @@ class UserHandler{
         return response
     }
 
-    getUserByUsernameHandler = async(request, h) => {
+    getUserByEmailHandler = async(request, h) => {
         
         try {
-            const { username } = request.params
-            const user = await this.service.getUserByUsername(username)
+            const { email } = request.params
+            const user = await this.service.getUserByEmail(email)
 
             return h.response({
                 status: 'success',

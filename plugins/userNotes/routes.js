@@ -23,8 +23,8 @@ const routesUser = (handler) => [
     },
     {
         method: 'GET',
-        path: '/user/{username}',
-        handler: handler.getUserByUsernameHandler
+        path: '/user/{email}',
+        handler: handler.getUserByEmailHandler
     },
     {
         method: 'PUT',

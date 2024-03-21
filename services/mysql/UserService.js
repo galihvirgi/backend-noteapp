@@ -18,7 +18,7 @@ class UserServices{
     }
 
     async getUserByEmail(email) {
-        const [rows] = await this.pool.query('SELECT * FROM user WHERE email=:email', {email})
+        const [rows] = await this.pool.execute('SELECT * FROM user WHERE email=:email', {email})
         return rows
     }
 

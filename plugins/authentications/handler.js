@@ -11,7 +11,7 @@ class AuthHandler{
         const { email, password } = request.payload
 
         const userDb = await this._userService.getUserByEmail(email)
-
+        console.log(email, userDb)
         if(userDb.length == 0){
             const response =  h.response({
                 status: 'fail',
@@ -22,7 +22,7 @@ class AuthHandler{
         }
 
         if(userDb[0].password == password){
-            const token = generateToken({ id: userDb[0].id})
+            const token = generateToken({ id: userDb[0].id })
             const response = h.response({
                 status: 'success',
                 message: 'anda berhasil login', 
