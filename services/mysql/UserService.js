@@ -17,9 +17,9 @@ class UserServices{
         return rows
     }
 
-    async getUserByUsername(username) {
-        const [result] = await this.pool.query('SELECT * FROM user WHERE username=:username', {username})
-        return result
+    async getUserByEmail(email) {
+        const [rows] = await this.pool.query('SELECT * FROM user WHERE email=:email', {email})
+        return rows
     }
 
     async editUserById(id, {username, email, password}){
