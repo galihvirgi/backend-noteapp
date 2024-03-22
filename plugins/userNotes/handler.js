@@ -2,7 +2,7 @@ const mysql = require ('mysql2/promise');
 
 class UserHandler{
     constructor(service){
-        this.service = service
+        this._service = service
 
         this.addUserHandler = this.addUserHandler.bind(this)
         this.getUserHandler = this.getUserHandler.bind(this)
@@ -13,7 +13,7 @@ class UserHandler{
     addUserHandler = async (request, h) => {
         const {username, email, password} = request.payload
 
-        const userId = await this.service.addUser({username, email, password})
+        const userId = await this._service.addUser({username, email, password})
 
         const response = h.response({
             status: 'success',
@@ -24,7 +24,7 @@ class UserHandler{
     }
 
     getUserHandler = async(request, h) => {
-        const user = await this.service.getUsers()
+        const user = await this._service.getUsers()
 
         const response = h.response({
             status: 'success',
@@ -41,7 +41,7 @@ class UserHandler{
         
         try {
             const { email } = request.params
-            const user = await this.service.getUserByEmail(email)
+            const user = await this._service.getUserByEmail(email)
 
             return h.response({
                 status: 'success',
@@ -62,7 +62,7 @@ class UserHandler{
             const { id } = request.params
             const { username, email, password } = request.payload
 
-            await this.service.editUserById(id, {username, email, password})
+            await this._service.editUserById(id, {username, email, password})
 
             return h.response({
                 status: 'success',
@@ -81,7 +81,7 @@ class UserHandler{
         
         try {
             const { id } = request.params
-            this.service.deleteUserById(id)
+            this._service.deleteUserById(id)
 
             return h.response({
                 status: 'success',
