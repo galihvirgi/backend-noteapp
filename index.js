@@ -29,7 +29,6 @@ const init = async () => {
     // INI OBJEK SERVICES
     const noteServices = new NoteService(pool)
     const userServices = new UserServices(pool)
-    console.log(userServices)
     
 
     const server = Hapi.server({

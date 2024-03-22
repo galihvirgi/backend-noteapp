@@ -17,8 +17,13 @@ class NotesService {
     return rows
   }
 
+  async getNotesByUserId(userId){
+    const [rows] = await this._pool.query('SELECT * FROM note WHERE writer=:userId', {userId})
+    return rows
+  }
+
   async getNoteById(id) {
-    const [result] = await this._pool.execute('SELECT * FROM note WHERE id=:id', { id })
+    const [result] = await this._pool.query('SELECT * FROM note WHERE id=:id', { id })
     return result
   }
 

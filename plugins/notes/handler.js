@@ -56,19 +56,27 @@ class NoteHandler {
     }
 
     getNotesHandler = async (request, h) => {
+        try{
+            const {id} = request.auth.credentials;
+            const notes = await this._service.getNotesByUserId(id)
+            console.log(notes)
 
-        const notes = await this._service.getNotes()
+            const response = h.response({
+                status: 'success',
+                data: {
+                    notes
+                }
+            })
 
-
-        const response = h.response({
-            status: 'success',
-            data: {
-                notes
-            }
-        })
-
-        response.code(201)
-        return response
+            response.code(201)
+            return response
+        }catch(err){
+            console.log(err)
+            return h.response({
+                status: 'fail',
+                message: err.message,
+            })
+        }
     }
 
     getNoteByIdHandler = async (request, h) => {
